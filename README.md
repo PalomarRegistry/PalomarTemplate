@@ -15,6 +15,8 @@ the separation between the human-auditable statement and the proof.
 - `comparator.json` tells Comparator which declarations must match.
 - `formalization.yaml` records provenance, authorship, automation, fidelity,
   and review information.
+- `LICENSE` contains the Apache License 2.0 terms declared by
+  `project.license`.
 - `docbuild/` is the recommended nested doc-gen4 project.
 - `scripts/verify-comparator.sh` runs pinned Comparator, lean4export, NanoDa,
   and Landrun revisions, and forces the independent NanoDa replay regardless
@@ -37,6 +39,9 @@ to immutable commits.
    Mark whether the result is original or source-based and whether this is the
    substantive development or a thin wrapper. Original results may remove the
    `sources` list. Remove `related_formalizations` when none are known.
+   Apache-2.0 is the template default and is common in the Lean ecosystem. If
+   the project uses another licence, replace `LICENSE` and
+   `project.license` together with one mechanically recognizable SPDX licence.
 5. Update and commit dependency pins:
 
    ```text
@@ -81,6 +86,8 @@ must have precise mathematical meanings and docstrings. Palomar-indexed
 statement dependencies are allowed but enlarge the trust surface and are
 prominently flagged. Dependencies used only by the proof may be arbitrary pinned
 Git dependencies.
+The root licence covers this repository snapshot only; cited papers, reused
+formalizations, and dependencies retain their own licences.
 
 Questions are welcome in the
 [Palomar channel on the Lean Zulip](https://leanprover.zulipchat.com/#narrow/channel/621638-Palomar).

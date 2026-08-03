@@ -5,7 +5,8 @@ project:
   name: "TEMPLATE: name of the formalization"
   authors:
     - "TEMPLATE: formalizer name"
-  license: "MIT"
+  # SPDX identifier for the single conventional root licence file.
+  license: "Apache-2.0"
   responsible_maintainers:
     - "TEMPLATE: person responsible for this formalization"
 

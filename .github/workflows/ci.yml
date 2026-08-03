@@ -14,6 +14,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  license:
+    name: Check Apache licence default
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b
+        with:
+          ruby-version: "3.3.12"
+      - name: Detect the repository licence
+        run: |
+          gem install licensee --version 10.0.0 --no-document
+          licensee detect LICENSE --json --no-packages --no-readme > "$RUNNER_TEMP/license.json"
+          ruby -rjson -e '
+            report = JSON.parse(File.read(ARGV.fetch(0)))
+            identifiers = report.fetch("licenses").map { |item| item.fetch("spdx_id") }
+            abort "LICENSE is not detected exactly as Apache-2.0" unless identifiers == ["Apache-2.0"]
+          ' "$RUNNER_TEMP/license.json"
+          grep -Fx '  license: "Apache-2.0"' formalization.yaml
+
   build:
     name: Build with Lean
     runs-on: ubuntu-latest

@@ -7,7 +7,9 @@
 4. Update `comparator.json` with every advertised theorem and any definition
    holes. Definition holes require special editorial scrutiny.
 5. Replace every `TEMPLATE` value in `formalization.yaml` with honest,
-   independently checkable metadata.
+   independently checkable metadata. The template defaults to Apache-2.0; if
+   changing the repository licence, replace both `LICENSE` and
+   `project.license` with one matching standard SPDX licence.
 6. Run `lake update` and `cd docbuild && lake update` after changing dependencies,
    then commit both manifest files.
 7. Run `lake build`, build the docs, and run Comparator before opening a
@@ -15,4 +17,3 @@
 
 Do not submit the toy theorem unchanged. Palomar applies a substantive
 research-interest floor in addition to mechanical verification.
-
