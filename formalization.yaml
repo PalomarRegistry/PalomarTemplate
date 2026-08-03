@@ -6,6 +6,22 @@ project:
   authors:
     - "TEMPLATE: formalizer name"
   license: "MIT"
+  responsible_maintainers:
+    - "TEMPLATE: person responsible for this formalization"
+
+provenance:
+  # Use original for a result first presented by this formalization. Such a
+  # project may omit sources. Use source-based when formalizing or adapting an
+  # existing mathematical result.
+  result_origin: "source-based"
+
+repository:
+  # Use thin-wrapper only when this repository merely exposes another pinned
+  # formalization repository to Comparator; then add substantive_formalization.
+  role: "substantive-development"
+  # substantive_formalization:
+  #   id: "owner/repository"
+  #   revision: "0000000000000000000000000000000000000000"
 
 classification:
   # Replace these with 1–2 arXiv categories and 1–8 MSC 2020 codes for the result.
@@ -17,10 +33,17 @@ sources:
     authors:
       - "TEMPLATE: source author"
     id: "https://example.com/replace-with-a-versioned-source"
-    type: "TEMPLATE: paper, preprint, textbook, or original result"
+    type: "TEMPLATE: paper, book, web discussion, folklore, or other"
+    location: "TEMPLATE: stable URL or bibliographic location, if available"
+    relationship: "formalizes"
     license: "TEMPLATE: source license or unknown"
     author_contacted: "n/a"
-    prior_work: "TEMPLATE: earlier formalization URL or none known"
+    author_endorsement: "not-contacted"
+
+related_formalizations:
+  - id: "TEMPLATE: stable URL or identifier for earlier formalization"
+    relationship: "builds-on"
+    note: "TEMPLATE: explain the relationship"
 
 status:
   scope: >-

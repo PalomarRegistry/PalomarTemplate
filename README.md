@@ -33,6 +33,9 @@ to immutable commits.
    Comparator declaration, and metadata.
 3. Replace the example library, `Challenge.lean`, and `Solution.lean`.
 4. Replace every `TEMPLATE` value in `formalization.yaml`.
+   Mark whether the result is original or source-based and whether this is the
+   substantive development or a thin wrapper. Original results may remove the
+   `sources` list. Remove `related_formalizations` when none are known.
 5. Update and commit dependency pins:
 
    ```text
@@ -58,6 +61,11 @@ to immutable commits.
    commit the final snapshot, and
    [open the submission form](https://github.com/kim-em/PalomarSubmission/issues/new?template=submit.yml)
    with the full 40-character commit SHA.
+
+   Submit only if you are responsible for the substantive formalization or
+   have approval from someone who is. For a thin wrapper, this refers to the
+   maintainers of the underlying repository; the form records that relationship
+   and allows optional evidence.
 
 ## Important boundaries
 
