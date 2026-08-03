@@ -16,8 +16,9 @@ the separation between the human-auditable statement and the proof.
 - `formalization.yaml` records provenance, authorship, automation, fidelity,
   and review information.
 - `docbuild/` is the recommended nested doc-gen4 project.
-- `scripts/verify-comparator.sh` runs pinned Comparator, lean4export, and
-  Landrun revisions; `scripts/landrun-wrapper.sh` preserves lean4export's
+- `scripts/verify-comparator.sh` runs pinned Comparator, lean4export, NanoDa,
+  and Landrun revisions, and forces the independent NanoDa replay regardless
+  of `comparator.json`; `scripts/landrun-wrapper.sh` preserves lean4export's
   command delimiter when invoked through Landrun's current CLI.
 
 The root uses `lakefile.toml`, a supported stable Lean toolchain, and committed
@@ -54,7 +55,7 @@ to immutable commits.
    ```
 
    Run the final command from the repository root. It requires Linux, Git, Go,
-   and a working Landrun sandbox.
+   Rust/Cargo, Python 3, and a working Landrun sandbox.
 
 7. Read the current
    [Palomar submission policy](https://github.com/kim-em/PalomarPolicy/blob/main/CONTRIBUTING.md),
