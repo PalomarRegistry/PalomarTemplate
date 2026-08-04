@@ -82,10 +82,10 @@ statement using the permitted axioms. It does not establish mathematical
 significance, fidelity to a source, novelty, or peer review.
 
 Keep `Challenge.lean` ordinary and readable. Definitions needed by the statement
-must have precise mathematical meanings and docstrings. Palomar-indexed
-statement dependencies are allowed but enlarge the trust surface and are
-prominently flagged. Dependencies used only by the proof may be arbitrary pinned
-Git dependencies.
+must have precise mathematical meanings and docstrings. Its transitive imports
+must resolve to Lean core, Mathlib, or Tau Ceti; a Tau Ceti import enlarges the
+trust surface and is prominently flagged. Dependencies used only by the proof
+may be arbitrary pinned Git dependencies.
 The root licence covers this repository snapshot only; cited papers, reused
 formalizations, and dependencies retain their own licences.
 
