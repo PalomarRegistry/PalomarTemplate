@@ -1,9 +1,9 @@
 # PalomarTemplate
 
-[![CI](https://github.com/kim-em/PalomarTemplate/actions/workflows/ci.yml/badge.svg)](https://github.com/kim-em/PalomarTemplate/actions/workflows/ci.yml)
+[![CI](https://github.com/PalomarRegistry/PalomarTemplate/actions/workflows/ci.yml/badge.svg)](https://github.com/PalomarRegistry/PalomarTemplate/actions/workflows/ci.yml)
 
 A best-practice starting point for a
-[Palomar](https://kim-em.github.io/PalomarWeb/) submission. Use this as a
+[Palomar](https://palomarregistry.github.io/PalomarWeb/) submission. Use this as a
 GitHub template, replace the toy theorem and all `TEMPLATE` metadata, and keep
 the separation between the human-auditable statement and the proof.
 
@@ -63,9 +63,9 @@ to immutable commits.
    Rust/Cargo, Python 3, and a working Landrun sandbox.
 
 7. Read the current
-   [Palomar submission policy](https://github.com/kim-em/PalomarPolicy/blob/main/CONTRIBUTING.md),
+   [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),
    commit the final snapshot, and
-   [open the submission form](https://github.com/kim-em/PalomarSubmission/issues/new?template=submit.yml)
+   [open the submission form](https://github.com/PalomarRegistry/PalomarSubmission/issues/new?template=submit.yml)
    with the full 40-character commit SHA.
 
    Submit only if you are responsible for the substantive formalization or
