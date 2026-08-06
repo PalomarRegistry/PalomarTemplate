@@ -10,12 +10,6 @@ project:
   responsible_maintainers:
     - "TEMPLATE: person responsible for this formalization"
 
-provenance:
-  # Use original for a result first presented by this formalization. Such a
-  # project may omit sources. Use source-based when formalizing or adapting an
-  # existing mathematical result.
-  result_origin: "source-based"
-
 repository:
   # Use thin-wrapper only when this repository merely exposes another pinned
   # formalization repository to Comparator; then add substantive_formalization.
@@ -30,15 +24,16 @@ classification:
   msc2020: ["03B35"]
 
 sources:
+  # Sources are required. For a theorem first presented by this formalization,
+  # use a descriptive title and set type to original-proof.
   - title: "TEMPLATE: title of the mathematical source"
     authors:
       - "TEMPLATE: source author"
     id: "https://example.com/replace-with-a-versioned-source"
-    type: "TEMPLATE: paper, book, web discussion, folklore, or other"
+    type: "TEMPLATE: paper, book, web discussion, folklore, original-proof, or other"
     location: "TEMPLATE: stable URL or bibliographic location, if available"
     relationship: "formalizes"
     license: "TEMPLATE: source license or unknown"
-    author_contacted: "n/a"
     author_endorsement: "not-contacted"
 
 related_formalizations:

@@ -36,9 +36,11 @@ to immutable commits.
    Comparator declaration, and metadata.
 3. Replace the example library, `Challenge.lean`, and `Solution.lean`.
 4. Replace every `TEMPLATE` value in `formalization.yaml`.
-   Mark whether the result is original or source-based and whether this is the
-   substantive development or a thin wrapper. Original results may remove the
-   `sources` list. Remove `related_formalizations` when none are known.
+   Keep the required `sources` list. For a result first presented by the
+   formalization, use a descriptive source entry with `type: original-proof`;
+   otherwise cite the mathematical source. Mark whether this is the substantive
+   development or a thin wrapper. Remove `related_formalizations` when none are
+   known.
    Apache-2.0 is the template default and is common in the Lean ecosystem. If
    the project uses another licence, replace `LICENSE` and
    `project.license` together with one mechanically recognizable SPDX licence.
