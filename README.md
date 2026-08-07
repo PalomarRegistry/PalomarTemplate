@@ -3,7 +3,7 @@
 [![CI](https://github.com/PalomarRegistry/PalomarTemplate/actions/workflows/ci.yml/badge.svg)](https://github.com/PalomarRegistry/PalomarTemplate/actions/workflows/ci.yml)
 
 A best-practice starting point for a
-[Palomar](https://palomarregistry.github.io/PalomarWeb/) submission. Use this as a
+[Palomar](https://palomar-registry.org/) submission. Use this as a
 GitHub template, replace the toy theorem and all `TEMPLATE` metadata, and keep
 the separation between the human-auditable statement and the proof.
 
