@@ -48,9 +48,12 @@ commits.
    otherwise cite the mathematical source. Mark whether this is the substantive
    development or a thin wrapper. Remove `related_formalizations` when none are
    known.
-   Apache-2.0 is the template default and is common in the Lean ecosystem. If
-   the project uses another licence, replace `LICENSE` and
-   `project.license` together with one mechanically recognizable SPDX licence.
+   Keep the repository's Apache-2.0 `LICENSE` file and the matching
+   `project.license: "Apache-2.0"` metadata. This starter template supports
+   only that root licence. If the project deliberately uses another root
+   licence permitted by Palomar policy, use another starting point or own and
+   maintain the project's licence-validation CI contract. Cited sources and
+   dependencies retain their own licences.
 5. Update and commit dependency pins:
 
    ```text
@@ -68,16 +71,19 @@ commits.
    ./scripts/verify-comparator.sh
    ```
 
-   The metadata command parses the YAML and reports the path of every retained
-   template sentinel. CI runs an explicit `--expect-template` check in the
-   canonical template and its direct contribution forks, proving that the
-   shipped toy metadata still has exactly the intended sentinel surface.
-   Repositories made with **Use this template**, and forks of those derived
-   repositories, run the ordinary command and require every sentinel to be
-   replaced. CI also runs the corresponding build, documentation, cache, and
-   Comparator checks. Run the final command from the repository root. The full
-   check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3, and a working
-   Landrun sandbox.
+   The metadata command parses the YAML, requires the Apache-2.0 root-licence
+   declaration, and reports the path of every retained template sentinel. CI
+   also detects the checked-in `LICENSE` file independently and runs an
+   explicit `--expect-template` check only in the canonical
+   `PalomarRegistry/PalomarTemplate` repository, proving that the shipped toy
+   metadata still has exactly the intended sentinel surface. Pull requests
+   from contribution forks run in that upstream repository context. Every
+   other repository—including standalone forks and repositories made with
+   **Use this template**—runs the ordinary command and requires every sentinel
+   to be replaced. CI also runs the corresponding build, documentation, cache,
+   and Comparator checks. Run the final command from the repository root. The
+   full check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3, and a
+   working Landrun sandbox.
 
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),

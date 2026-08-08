@@ -11,61 +11,11 @@ require_relative "../scripts/validate-formalization"
 class ValidateFormalizationTest < Minitest::Test
   ROOT = Pathname(__dir__).parent
   SCRIPT = ROOT / "scripts/validate-formalization.rb"
-  SHIPPED_METADATA = ROOT / "formalization.yaml"
-  SHIPPED_TEMPLATE_PATHS = [
-    "$.project.name",
-    "$.project.authors[0]",
-    "$.project.responsible_maintainers[0]",
-    "$.repository.role",
-    "$.classification.arxiv[0]",
-    "$.classification.msc2020[0]",
-    "$.sources[0].title",
-    "$.sources[0].authors[0]",
-    "$.sources[0].id",
-    "$.sources[0].type",
-    "$.sources[0].location",
-    "$.sources[0].relationship",
-    "$.sources[0].license",
-    "$.sources[0].author_endorsement",
-    "$.related_formalizations[0].id",
-    "$.related_formalizations[0].relationship",
-    "$.related_formalizations[0].note",
-    "$.status.scope",
-    "$.status.sorry_count",
-    "$.status.sorry_in_definitions",
-    "$.status.axioms[0]",
-    "$.status.main_results[0].declaration",
-    "$.status.main_results[0].file",
-    "$.status.main_results[0].sorry_count",
-    "$.status.main_results[0].axioms[0]",
-    "$.status.main_results[0].comparator_config",
-    "$.status.main_results[0].literature_dependencies[0]",
-    "$.automation.methods[0].method",
-    "$.automation.methods[0].models[0]",
-    "$.automation.methods[0].framework",
-    "$.automation.methods[0].tool_setup",
-    "$.automation.methods[0].cost.wall_time",
-    "$.automation.methods[0].cost.spend_usd",
-    "$.automation.methods[0].cost.hardware",
-    "$.automation.methods[0].prompting_notes",
-    "$.automation.spend_usd",
-    "$.automation.notes",
-    "$.fidelity.divergences",
-    "$.review.status",
-    "$.review.reviewers[0]",
-    "$.review.notes",
-    "$.alignment.namespace",
-    "$.alignment.statements[0].source",
-    "$.alignment.statements[0].lean",
-    "$.alignment.statements[0].module",
-    "$.alignment.statements[0].status",
-    "$.alignment.statements[0].note",
-    "$.acknowledgements"
-  ].freeze
 
   CUSTOMIZED_YAML = <<~YAML
     project:
       name: Example
+      license: Apache-2.0
     classification:
       arxiv: [math.LO]
       msc2020: [03B35]
@@ -89,16 +39,43 @@ class ValidateFormalizationTest < Minitest::Test
     Open3.capture3(RbConfig.ruby, SCRIPT.to_s, *arguments)
   end
 
-  def test_shipped_metadata_is_valid_and_has_the_exact_template_surface
-    document = FormalizationTemplate.load_document(SHIPPED_METADATA)
-    assert_equal SHIPPED_TEMPLATE_PATHS, FormalizationTemplate.placeholder_paths(document)
-    assert_equal SHIPPED_TEMPLATE_PATHS,
-                 FormalizationTemplate.validate(SHIPPED_METADATA, expect_template: true)
-  end
-
   def test_accepts_customized_yaml
     metadata(CUSTOMIZED_YAML) do |path|
       assert_empty FormalizationTemplate.validate(path)
+    end
+  end
+
+  def test_requires_the_apache_2_license_contract
+    metadata(CUSTOMIZED_YAML.sub("license: Apache-2.0", "license: MIT")) do |path|
+      error = assert_raises(FormalizationTemplate::ValidationError) do
+        FormalizationTemplate.validate(path)
+      end
+      assert_includes error.message, "$.project.license must be \"Apache-2.0\", not \"MIT\""
+      assert_includes error.message, "Keep the repository's Apache-2.0 LICENSE file unchanged"
+    end
+
+    metadata(CUSTOMIZED_YAML.sub("  license: Apache-2.0\n", "")) do |path|
+      error = assert_raises(FormalizationTemplate::ValidationError) do
+        FormalizationTemplate.validate(path)
+      end
+      assert_includes error.message, "$.project.license must be \"Apache-2.0\", not nil"
+    end
+  end
+
+  def test_cli_rejects_a_different_or_missing_root_license
+    cases = {
+      '"MIT"' => CUSTOMIZED_YAML.sub("license: Apache-2.0", "license: MIT"),
+      "nil" => CUSTOMIZED_YAML.sub("  license: Apache-2.0\n", "")
+    }
+    cases.each do |actual, contents|
+      metadata(contents) do |path|
+        output, errors, status = cli(path)
+        refute_predicate status, :success?
+        assert_equal 1, status.exitstatus
+        assert_empty output
+        assert_includes errors,
+                        "$.project.license must be \"Apache-2.0\", not #{actual}"
+      end
     end
   end
 
@@ -190,12 +167,10 @@ class ValidateFormalizationTest < Minitest::Test
     end
   end
 
-  def test_template_cli_succeeds_only_for_the_shipped_surface
-    output, errors, status = cli("--expect-template", SHIPPED_METADATA.to_s)
-    assert_predicate status, :success?
-    assert_equal "#{SHIPPED_METADATA} contains the expected 48 TEMPLATE values\n", output
-    assert_empty errors
-
+  # The canonical-only workflow is the integration test for the shipped
+  # formalization.yaml. Unit tests must stay independent of that file because
+  # repositories created from this template are required to customize it.
+  def test_template_cli_rejects_a_non_template_surface
     metadata(CUSTOMIZED_YAML) do |path|
       output, errors, status = cli("--expect-template", path)
       refute_predicate status, :success?
@@ -226,14 +201,12 @@ end
 
 class MetadataWorkflowRoutingTest < Minitest::Test
   WORKFLOW = File.read(Pathname(__dir__).parent / ".github/workflows/ci.yml")
+  CONDITIONS = WORKFLOW.lines.map(&:strip).grep(/\Aif:/).freeze
 
-  def test_only_the_canonical_repository_and_its_direct_forks_use_template_mode
-    assert_includes WORKFLOW, <<~YAML.chomp
-      if: github.repository == 'PalomarRegistry/PalomarTemplate' || github.event.repository.parent.full_name == 'PalomarRegistry/PalomarTemplate'
-    YAML
-    assert_includes WORKFLOW, <<~YAML.chomp
-      if: github.repository != 'PalomarRegistry/PalomarTemplate' && github.event.repository.parent.full_name != 'PalomarRegistry/PalomarTemplate'
-    YAML
-    refute_includes WORKFLOW, "github.event.repository.fork"
+  def test_only_the_canonical_repository_uses_template_mode
+    assert_includes CONDITIONS,
+                    "if: github.repository == 'PalomarRegistry/PalomarTemplate'"
+    assert_includes CONDITIONS,
+                    "if: github.repository != 'PalomarRegistry/PalomarTemplate'"
   end
 end

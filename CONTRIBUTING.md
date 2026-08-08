@@ -11,13 +11,15 @@
    `ruby scripts/validate-formalization.rb`; it parses the file and lists every
    retained sentinel, including deliberately invalid classification, proof,
    automation, and review defaults. Replace a placeholder list with `[]` only
-   when none is the honest answer. The template defaults to Apache-2.0; if
-   changing the repository licence, replace both `LICENSE` and
-   `project.license` with one matching standard SPDX licence.
+   when none is the honest answer. Keep the Apache-2.0 `LICENSE` file and the
+   matching `project.license: "Apache-2.0"` metadata. This starter template
+   supports only that root licence. A project deliberately using another root
+   licence permitted by Palomar policy needs another starting point or must
+   own and maintain its licence-validation CI contract.
 6. Run `lake update` and `cd docbuild && lake update` after changing dependencies,
    then commit both manifest files.
-7. Run `lake build`, build the docs, and run Comparator before opening a
-   Palomar submission issue.
+7. Run `lake build`, build the docs, and run Comparator before submitting to
+   Palomar.
 
 Do not submit the toy theorem unchanged. Palomar applies a substantive
 research-interest floor in addition to mechanical verification.

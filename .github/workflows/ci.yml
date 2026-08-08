@@ -27,10 +27,10 @@ jobs:
       - name: Test the metadata validator
         run: ruby test/validate_formalization_test.rb
       - name: Check the canonical template sentinel surface
-        if: github.repository == 'PalomarRegistry/PalomarTemplate' || github.event.repository.parent.full_name == 'PalomarRegistry/PalomarTemplate'
+        if: github.repository == 'PalomarRegistry/PalomarTemplate'
         run: ruby scripts/validate-formalization.rb --expect-template
       - name: Reject retained template values in a derived repository
-        if: github.repository != 'PalomarRegistry/PalomarTemplate' && github.event.repository.parent.full_name != 'PalomarRegistry/PalomarTemplate'
+        if: github.repository != 'PalomarRegistry/PalomarTemplate'
         run: ruby scripts/validate-formalization.rb
       - name: Detect the repository licence
         run: |
@@ -41,7 +41,6 @@ jobs:
             identifiers = report.fetch("licenses").map { |item| item.fetch("spdx_id") }
             abort "LICENSE is not detected exactly as Apache-2.0" unless identifiers == ["Apache-2.0"]
           ' "$RUNNER_TEMP/license.json"
-          grep -Fx '  license: "Apache-2.0"' formalization.yaml
 
   submission-link:
     name: Check where the README sends a submitter

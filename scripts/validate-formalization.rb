@@ -6,6 +6,7 @@ require "yaml"
 
 module FormalizationTemplate
   SENTINEL = /\ATEMPLATE(?::|\z)/
+  REQUIRED_LICENSE = "Apache-2.0"
   REQUIRED_SECTIONS = %w[project classification automation review].freeze
   EXPECTED_TEMPLATE_PATHS = [
     "$.project.name",
@@ -104,7 +105,16 @@ module FormalizationTemplate
   end
 
   def self.validate(path, expect_template: false)
-    placeholders = placeholder_paths(load_document(path))
+    document = load_document(path)
+    actual_license = document.dig("project", "license")
+    unless actual_license == REQUIRED_LICENSE
+      raise ValidationError, <<~MESSAGE.chomp
+        #{path} $.project.license must be #{REQUIRED_LICENSE.inspect}, not #{actual_license.inspect}.
+        Keep the repository's Apache-2.0 LICENSE file unchanged and set project.license to #{REQUIRED_LICENSE.inspect}.
+      MESSAGE
+    end
+
+    placeholders = placeholder_paths(document)
     if expect_template
       missing = EXPECTED_TEMPLATE_PATHS - placeholders
       unexpected = placeholders - EXPECTED_TEMPLATE_PATHS
