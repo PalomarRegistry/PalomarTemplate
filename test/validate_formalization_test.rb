@@ -223,3 +223,17 @@ class ValidateFormalizationTest < Minitest::Test
     assert_includes errors, "Usage:"
   end
 end
+
+class MetadataWorkflowRoutingTest < Minitest::Test
+  WORKFLOW = File.read(Pathname(__dir__).parent / ".github/workflows/ci.yml")
+
+  def test_only_the_canonical_repository_and_its_direct_forks_use_template_mode
+    assert_includes WORKFLOW, <<~YAML.chomp
+      if: github.repository == 'PalomarRegistry/PalomarTemplate' || github.event.repository.parent.full_name == 'PalomarRegistry/PalomarTemplate'
+    YAML
+    assert_includes WORKFLOW, <<~YAML.chomp
+      if: github.repository != 'PalomarRegistry/PalomarTemplate' && github.event.repository.parent.full_name != 'PalomarRegistry/PalomarTemplate'
+    YAML
+    refute_includes WORKFLOW, "github.event.repository.fork"
+  end
+end

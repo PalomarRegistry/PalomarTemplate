@@ -27,10 +27,10 @@ jobs:
       - name: Test the metadata validator
         run: ruby test/validate_formalization_test.rb
       - name: Check the canonical template sentinel surface
-        if: github.repository == 'PalomarRegistry/PalomarTemplate' || github.event.repository.fork == true
+        if: github.repository == 'PalomarRegistry/PalomarTemplate' || github.event.repository.parent.full_name == 'PalomarRegistry/PalomarTemplate'
         run: ruby scripts/validate-formalization.rb --expect-template
       - name: Reject retained template values in a derived repository
-        if: github.repository != 'PalomarRegistry/PalomarTemplate' && github.event.repository.fork != true
+        if: github.repository != 'PalomarRegistry/PalomarTemplate' && github.event.repository.parent.full_name != 'PalomarRegistry/PalomarTemplate'
         run: ruby scripts/validate-formalization.rb
       - name: Detect the repository licence
         run: |
