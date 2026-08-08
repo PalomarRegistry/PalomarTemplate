@@ -25,10 +25,12 @@ the separation between the human-auditable statement and the proof.
 
 The root uses `lakefile.toml`, a supported stable Lean toolchain, and committed
 Lake manifests. The verifier reads `lean-toolchain` and checks that its pinned
-lean4export revision targets the same toolchain. GitHub Actions builds the Lean
-project with `lean-action`, generates API documentation with doc-gen4, and
-independently checks the advertised statement with Comparator. Actions and
-verification tools are pinned to immutable commits.
+lean4export revision targets the same toolchain. When changing that exporter
+pin, review whether Comparator and NanoDa remain compatible with its export
+format. GitHub Actions builds the Lean project with `lean-action`, generates API
+documentation with doc-gen4, and independently checks the advertised statement
+with Comparator. Actions and verification tools are pinned to immutable
+commits.
 
 ## Start a real project
 
@@ -62,10 +64,10 @@ verification tools are pinned to immutable commits.
    ./scripts/verify-comparator.sh
    ```
 
-   CI runs the corresponding build, documentation, and Comparator checks; the
-   cache and placeholder commands are additional local preflight checks. Run
+   CI runs the corresponding build, documentation, cache, and Comparator
+   checks; the placeholder command is an additional local preflight check. Run
    the final command from the repository root. It requires Linux, Git, Go,
-   Rust/Cargo, and a working Landrun sandbox.
+   Rust/Cargo, Python 3, and a working Landrun sandbox.
 
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),
