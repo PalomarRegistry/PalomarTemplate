@@ -11,9 +11,9 @@
    `ruby scripts/validate-formalization.rb`; it parses the file and lists every
    retained sentinel, including deliberately invalid classification, proof,
    automation, and review defaults. Replace a placeholder list with `[]` only
-   when none is the honest answer. The `sources` list is the exception: it must
-   remain nonempty, so follow the result-origin instructions beside `sources` in
-   `formalization.yaml` rather than replacing it with `[]`. Keep the Apache-2.0
+   where its adjacent comment permits that; lists described as required must
+   remain nonempty. In particular, follow the result-origin instructions beside
+   `sources` rather than replacing that list with `[]`. Keep the Apache-2.0
    `LICENSE` file and the matching `project.license: "Apache-2.0"` metadata.
    This starter template supports only that root licence. A project deliberately
    using another root licence permitted by Palomar policy needs another starting

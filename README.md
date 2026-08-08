@@ -42,25 +42,28 @@ commits.
    otherwise look like plausible defaults—including repository role,
    classifications, proof counts, automation method, and review status—are
    deliberately invalid until you choose them. Replace a placeholder list with
-   an empty list only where the honest project-specific answer is none.
+   an empty list only where its adjacent comment permits that; lists described
+   as required must remain nonempty.
    The `sources` list must remain nonempty. Every source relationship must be
    exactly `formalizes`, `adapts`, `independently-proves`, `background`, or
    `other`. Choose one result origin: for a result first presented by the
    formalization, include a descriptive source with `type: original-proof` and
    `relationship: other`; every additional source must use `background` or
-   `other`. Otherwise, do not use `original-proof`, and give at least one cited
+   `other`. Otherwise, omit `type: original-proof`, and give at least one cited
    mathematical source a `formalizes`, `adapts`, or `independently-proves`
    relationship. A new proof of a known published result is source-based and
    uses `independently-proves`, not `original-proof`.
 
-   A source's `type` may be removed; when retained, it must be exactly `paper`,
-   `book`, `web discussion`, `folklore`, `original-proof`, or `other`. `web
-   discussion`, with a space, is the exact upstream spelling. Set
+   Every source needs a title and relationship. Its `type`, authors, identifier,
+   location, licence, and endorsement may be removed when genuinely
+   inapplicable. A retained type must be exactly `paper`, `book`,
+   `web discussion`, `folklore`, `original-proof`, or `other`; in the current
+   v0.3 Palomar contract, `web discussion` is spelled with a space. Set
    `repository.role` to `substantive-development` and omit
    `substantive_formalization`, or set it to `thin-wrapper` and provide the
    underlying `owner/repository` or `https://github.com/owner/repository` URL
    plus its full 40-character lowercase commit SHA. Remove
-   `related_formalizations` when none are known.
+   `related_formalizations` or set it to `[]` when none are known.
    Keep the repository's Apache-2.0 `LICENSE` file and the matching
    `project.license: "Apache-2.0"` metadata. This starter template supports
    only that root licence. If the project deliberately uses another root

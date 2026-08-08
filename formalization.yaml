@@ -1,9 +1,11 @@
 # formalization.yaml v0.3. Replace every TEMPLATE value before submitting.
-# A placeholder list may be replaced with [] when the honest answer is none.
+# Replace a placeholder list with [] only when its adjacent comment permits it;
+# lists described as required must remain nonempty.
 version: "v0.3"
 
 project:
   name: "TEMPLATE: name of the formalization"
+  # Required nonempty list of name strings or mappings with a nonempty name.
   authors:
     - "TEMPLATE: formalizer name"
   # Required root licence. Keep this in sync with the Apache-2.0 LICENSE file.
@@ -31,20 +33,22 @@ classification:
   msc2020: ["TEMPLATE: five-character MSC 2020 identifier such as 03B35"]
 
 sources:
-  # Sources must be nonempty. Every source relationship must be exactly
-  # formalizes, adapts, independently-proves, background, or other.
+  # Sources must be nonempty. Every source needs a title and relationship; the
+  # relationship must be exactly formalizes, adapts, independently-proves,
+  # background, or other.
   # Choose one result origin:
   # - For a theorem first presented by this formalization, set one source to
-  #   type original-proof and relationship other. All additional source
+  #   type: original-proof and relationship: other. All additional source
   #   relationships must be background or other.
-  # - Otherwise, remove original-proof and give at least one source a formalizes,
-  #   adapts, or independently-proves relationship. A new proof of a known
-  #   published result is source-based and uses independently-proves.
-  # Type is optional; remove its line when none applies. When present, it must
-  # be paper, book, web discussion, folklore, original-proof, or other. The exact
-  # upstream spelling is web discussion, with a space.
+  # - Otherwise, omit type: original-proof and give at least one source a
+  #   formalizes, adapts, or independently-proves relationship. A new proof of
+  #   a known published result is source-based and uses independently-proves.
+  # Type, authors, id, location, license, and author_endorsement are optional;
+  # remove them when genuinely inapplicable. A supplied type must be paper,
+  # book, web discussion, folklore, original-proof, or other. In the current
+  # v0.3 Palomar contract, web discussion is spelled with a space.
   # Original-result example:
-  # - title: A result first presented by this formalization
+  # - title: "TEMPLATE: describe the result first presented here"
   #   type: original-proof
   #   relationship: other
   - title: "TEMPLATE: title of the mathematical source"
@@ -58,6 +62,7 @@ sources:
     author_endorsement: "TEMPLATE: participated, endorsed, no-response, not-contacted, declined, or n/a"
 
 related_formalizations:
+  # Remove this field or use [] when none are known.
   - id: "TEMPLATE: stable URL or identifier for earlier formalization"
     relationship: "TEMPLATE: builds-on, adapts, independent, supersedes, or other"
     note: "TEMPLATE: explain the relationship"
