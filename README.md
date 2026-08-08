@@ -69,12 +69,15 @@ commits.
    ```
 
    The metadata command parses the YAML and reports the path of every retained
-   template sentinel. The template repository's own CI expects its toy metadata
-   to fail this check; the same inherited CI requires it to pass in every
-   derived repository. CI also runs the corresponding build, documentation,
-   cache, and Comparator checks. Run the final command from the repository
-   root. The full check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3,
-   and a working Landrun sandbox.
+   template sentinel. CI runs an explicit `--expect-template` check in the
+   canonical template and its contribution forks, proving that the shipped toy
+   metadata still has exactly the intended sentinel surface. Repositories made
+   with **Use this template** are independent repositories rather than forks,
+   so their inherited CI runs the ordinary command and requires every sentinel
+   to be replaced. CI also runs the corresponding build, documentation, cache,
+   and Comparator checks. Run the final command from the repository root. The
+   full check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3, and a
+   working Landrun sandbox.
 
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),

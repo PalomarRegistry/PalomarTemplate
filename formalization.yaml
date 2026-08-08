@@ -20,9 +20,10 @@ repository:
   #   revision: "TEMPLATE: full lowercase commit SHA"
 
 classification:
-  # Replace these with 1–2 arXiv categories and 1–8 MSC 2020 codes for the result.
-  arxiv: ["TEMPLATE: arXiv category"]
-  msc2020: ["TEMPLATE: MSC 2020 code"]
+  # Use 1–2 official arXiv identifiers such as math.LO and 1–8 five-character
+  # MSC 2020 identifiers such as 03B35.
+  arxiv: ["TEMPLATE: official arXiv identifier such as math.LO"]
+  msc2020: ["TEMPLATE: five-character MSC 2020 identifier such as 03B35"]
 
 sources:
   # Sources are required. For a theorem first presented by this formalization,
@@ -47,13 +48,14 @@ status:
     TEMPLATE: state exactly what is and is not formalized, including any weaker
     theorem, changed hypotheses, or omitted material.
   # Count the proof development, excluding Challenge.lean's deliberate sorry.
-  sorry_count: "TEMPLATE: nonnegative integer"
-  sorry_in_definitions: "TEMPLATE: nonnegative integer"
+  # Replace each count with an unquoted nonnegative integer, for example 0.
+  sorry_count: "TEMPLATE: unquoted nonnegative integer"
+  sorry_in_definitions: "TEMPLATE: unquoted nonnegative integer"
   axioms: ["TEMPLATE: declaration names, or replace this list with []"]
   main_results:
     - declaration: "TEMPLATE: fully qualified Lean declaration"
       file: "TEMPLATE: source file containing the proved declaration"
-      sorry_count: "TEMPLATE: nonnegative integer"
+      sorry_count: "TEMPLATE: unquoted nonnegative integer"
       axioms: ["TEMPLATE: declaration names, or replace this list with []"]
       comparator_config: "TEMPLATE: path to the Comparator configuration"
       literature_dependencies: ["TEMPLATE: source identifiers, or replace this list with []"]
@@ -76,7 +78,7 @@ fidelity:
   divergences: "TEMPLATE: all known divergences from the cited source, or none known"
 
 review:
-  status: "TEMPLATE: review status"
+  status: "TEMPLATE: honest review status, for example self-assessed"
   reviewers:
     - "TEMPLATE: reviewer name, or none"
   notes: "TEMPLATE: describe statement audits and mathematical review performed"

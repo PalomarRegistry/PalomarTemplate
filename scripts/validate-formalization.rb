@@ -1,12 +1,90 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "optparse"
 require "yaml"
 
 module FormalizationTemplate
   SENTINEL = /\ATEMPLATE(?::|\z)/
+  REQUIRED_SECTIONS = %w[project classification automation review].freeze
+  EXPECTED_TEMPLATE_PATHS = [
+    "$.project.name",
+    "$.project.authors[0]",
+    "$.project.responsible_maintainers[0]",
+    "$.repository.role",
+    "$.classification.arxiv[0]",
+    "$.classification.msc2020[0]",
+    "$.sources[0].title",
+    "$.sources[0].authors[0]",
+    "$.sources[0].id",
+    "$.sources[0].type",
+    "$.sources[0].location",
+    "$.sources[0].relationship",
+    "$.sources[0].license",
+    "$.sources[0].author_endorsement",
+    "$.related_formalizations[0].id",
+    "$.related_formalizations[0].relationship",
+    "$.related_formalizations[0].note",
+    "$.status.scope",
+    "$.status.sorry_count",
+    "$.status.sorry_in_definitions",
+    "$.status.axioms[0]",
+    "$.status.main_results[0].declaration",
+    "$.status.main_results[0].file",
+    "$.status.main_results[0].sorry_count",
+    "$.status.main_results[0].axioms[0]",
+    "$.status.main_results[0].comparator_config",
+    "$.status.main_results[0].literature_dependencies[0]",
+    "$.automation.methods[0].method",
+    "$.automation.methods[0].models[0]",
+    "$.automation.methods[0].framework",
+    "$.automation.methods[0].tool_setup",
+    "$.automation.methods[0].cost.wall_time",
+    "$.automation.methods[0].cost.spend_usd",
+    "$.automation.methods[0].cost.hardware",
+    "$.automation.methods[0].prompting_notes",
+    "$.automation.spend_usd",
+    "$.automation.notes",
+    "$.fidelity.divergences",
+    "$.review.status",
+    "$.review.reviewers[0]",
+    "$.review.notes",
+    "$.alignment.namespace",
+    "$.alignment.statements[0].source",
+    "$.alignment.statements[0].lean",
+    "$.alignment.statements[0].module",
+    "$.alignment.statements[0].status",
+    "$.alignment.statements[0].note",
+    "$.acknowledgements"
+  ].freeze
 
   class ValidationError < StandardError; end
+
+  def self.load_document(path)
+    text = File.binread(path).force_encoding(Encoding::UTF_8)
+    raise ValidationError, "#{path} must be valid UTF-8" unless text.valid_encoding?
+
+    document = YAML.safe_load(
+      text,
+      permitted_classes: [],
+      permitted_symbols: [],
+      aliases: false
+    )
+    raise ValidationError, "#{path} must contain one top-level mapping" unless document.is_a?(Hash)
+
+    missing = REQUIRED_SECTIONS.reject { |section| document[section].is_a?(Hash) }
+    unless missing.empty?
+      raise ValidationError,
+            "#{path} must contain the required mapping sections: #{missing.join(', ')}"
+    end
+
+    document
+  rescue Psych::Exception => error
+    detail = error.message.lines.first&.strip
+    raise ValidationError, "cannot parse #{path} as YAML: #{detail}"
+  rescue SystemCallError => error
+    raise ValidationError, "cannot read #{path}: #{error.message}"
+  end
 
   def self.placeholder_paths(value, path = "$")
     case value
@@ -25,17 +103,21 @@ module FormalizationTemplate
     end
   end
 
-  def self.validate(path)
-    document = YAML.safe_load(
-      File.read(path, encoding: "UTF-8"),
-      permitted_classes: [],
-      permitted_symbols: [],
-      aliases: false
-    )
-    raise ValidationError, "#{path} must contain one top-level mapping" unless document.is_a?(Hash)
+  def self.validate(path, expect_template: false)
+    placeholders = placeholder_paths(load_document(path))
+    if expect_template
+      missing = EXPECTED_TEMPLATE_PATHS - placeholders
+      unexpected = placeholders - EXPECTED_TEMPLATE_PATHS
+      return placeholders if missing.empty? && unexpected.empty?
 
-    placeholders = placeholder_paths(document)
-    return if placeholders.empty?
+      details = []
+      details << "missing expected values: #{missing.join(', ')}" unless missing.empty?
+      details << "unexpected values: #{unexpected.join(', ')}" unless unexpected.empty?
+      raise ValidationError,
+            "#{path} does not have the expected TEMPLATE sentinel surface; #{details.join('; ')}"
+    end
+
+    return placeholders if placeholders.empty?
 
     locations = placeholders.map { |item| "  #{item}" }.join("\n")
     raise ValidationError, <<~MESSAGE.chomp
@@ -43,18 +125,36 @@ module FormalizationTemplate
       #{locations}
       Replace every listed value with project-specific metadata; use [] for a placeholder list where the honest answer is none.
     MESSAGE
-  rescue Errno::ENOENT, EncodingError, Psych::Exception => error
-    raise ValidationError, "cannot read #{path} as YAML: #{error.message.lines.first&.strip}"
+  end
+
+  def self.run_cli(arguments, output: $stdout, errors: $stderr)
+    expect_template = false
+    parser = OptionParser.new do |options|
+      options.banner = "Usage: #{File.basename($PROGRAM_NAME)} [--expect-template] [formalization.yaml]"
+      options.on(
+        "--expect-template",
+        "require the canonical template's exact TEMPLATE sentinel surface"
+      ) { expect_template = true }
+    end
+    remaining = parser.parse(arguments)
+    raise OptionParser::InvalidArgument, "expected at most one metadata path" if remaining.length > 1
+
+    path = remaining.fetch(0, "formalization.yaml")
+    placeholders = validate(path, expect_template: expect_template)
+    if expect_template
+      output.puts "#{path} contains the expected #{placeholders.length} TEMPLATE values"
+    else
+      output.puts "#{path} contains no TEMPLATE values"
+    end
+    0
+  rescue OptionParser::ParseError => error
+    errors.puts error.message
+    errors.puts parser
+    2
+  rescue ValidationError => error
+    errors.puts error.message
+    1
   end
 end
 
-if $PROGRAM_NAME == __FILE__
-  begin
-    path = ARGV.fetch(0, "formalization.yaml")
-    FormalizationTemplate.validate(path)
-    puts "#{path} contains no TEMPLATE values"
-  rescue FormalizationTemplate::ValidationError => error
-    warn error.message
-    exit 1
-  end
-end
+exit FormalizationTemplate.run_cli(ARGV) if $PROGRAM_NAME == __FILE__

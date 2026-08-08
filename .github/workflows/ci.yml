@@ -26,18 +26,12 @@ jobs:
           ruby-version: "3.3.12"
       - name: Test the metadata validator
         run: ruby test/validate_formalization_test.rb
-      - name: Reject retained template values in derived repositories
-        env:
-          TEMPLATE_REPOSITORY: PalomarRegistry/PalomarTemplate
-        run: |
-          if [[ "$GITHUB_REPOSITORY" == "$TEMPLATE_REPOSITORY" ]]; then
-            if ruby scripts/validate-formalization.rb; then
-              echo "The canonical toy template must retain invalid TEMPLATE values" >&2
-              exit 1
-            fi
-            exit 0
-          fi
-          ruby scripts/validate-formalization.rb
+      - name: Check the canonical template sentinel surface
+        if: github.repository == 'PalomarRegistry/PalomarTemplate' || github.event.repository.fork == true
+        run: ruby scripts/validate-formalization.rb --expect-template
+      - name: Reject retained template values in a derived repository
+        if: github.repository != 'PalomarRegistry/PalomarTemplate' && github.event.repository.fork != true
+        run: ruby scripts/validate-formalization.rb
       - name: Detect the repository licence
         run: |
           gem install licensee --version 10.0.0 --no-document
