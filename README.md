@@ -67,13 +67,13 @@ to immutable commits.
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),
    commit the final snapshot, and
-   [open the submission form](https://github.com/PalomarRegistry/PalomarSubmission/issues/new?template=submit.yml)
+   [open the submission form](https://submit.palomar-registry.org/)
    with the full 40-character commit SHA.
 
-   Submit only if you are responsible for the substantive formalization or
-   have approval from someone who is. For a thin wrapper, this refers to the
-   maintainers of the underlying repository; the form records that relationship
-   and allows optional evidence.
+   Submit only if you are a responsible author or maintainer of the substantive
+   formalization, or have approval from one. For a thin wrapper, answer about
+   the underlying formalization rather than the wrapper; the form records that
+   relationship and allows optional evidence.
 
 ## Important boundaries
 

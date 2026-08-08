@@ -35,6 +35,42 @@ jobs:
           ' "$RUNNER_TEMP/license.json"
           grep -Fx '  license: "Apache-2.0"' formalization.yaml
 
+  submission-link:
+    name: Check where the README sends a submitter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check the submission form the README names
+        # The README sent a new submitter to an issue form that had already
+        # been deleted, in the repository Palomar recommends by name as a
+        # starting point. Deleting the bad link is not enough on its own: a
+        # README with no link at all, or with a misspelt host, would have
+        # passed that. So assert the destination as well as refusing the old
+        # one, and refuse only the Palomar issue form, because linking some
+        # other project's issue tracker is nobody's mistake.
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import re
+
+          form = "https://submit.palomar-registry.org/"
+          retired = re.compile(r"PalomarSubmission/issues/new")
+          failed = False
+          if form not in pathlib.Path("README.md").read_text():
+              print(f"README.md: does not send a submitter to {form}")
+              failed = True
+          for document in sorted(pathlib.Path(".").rglob("*.md")):
+              if ".lake" in document.parts:
+                  continue
+              for number, line in enumerate(document.read_text().splitlines(), 1):
+                  if retired.search(line):
+                      print(f"{document}:{number}: that submission form was deleted; submissions go to {form}")
+                      failed = True
+          raise SystemExit(failed)
+          PY
+
   build:
     name: Build with Lean
     runs-on: ubuntu-latest
