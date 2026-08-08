@@ -38,7 +38,11 @@ commits.
 2. Rename `PalomarTemplate` in the Lake package, module directory, namespace,
    Comparator declaration, and metadata.
 3. Replace the example library, `Challenge.lean`, and `Solution.lean`.
-4. Replace every `TEMPLATE` value in `formalization.yaml`.
+4. Replace every `TEMPLATE` value in `formalization.yaml`. Values that might
+   otherwise look like plausible defaults—including repository role,
+   classifications, proof counts, automation method, and review status—are
+   deliberately invalid until you choose them. Replace a placeholder list with
+   an empty list only where the honest project-specific answer is none.
    Keep the required `sources` list. For a result first presented by the
    formalization, use a descriptive source entry with `type: original-proof`;
    otherwise cite the mathematical source. Mark whether this is the substantive
@@ -60,14 +64,17 @@ commits.
    lake exe cache get
    lake build
    (cd docbuild && lake build PalomarTemplate:docs)
-   ! grep -n 'TEMPLATE:' formalization.yaml
+   ruby scripts/validate-formalization.rb
    ./scripts/verify-comparator.sh
    ```
 
-   CI runs the corresponding build, documentation, cache, and Comparator
-   checks; the placeholder command is an additional local preflight check. Run
-   the final command from the repository root. It requires Linux, Git, Go,
-   Rust/Cargo, Python 3, and a working Landrun sandbox.
+   The metadata command parses the YAML and reports the path of every retained
+   template sentinel. The template repository's own CI expects its toy metadata
+   to fail this check; the same inherited CI requires it to pass in every
+   derived repository. CI also runs the corresponding build, documentation,
+   cache, and Comparator checks. Run the final command from the repository
+   root. The full check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3,
+   and a working Landrun sandbox.
 
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),

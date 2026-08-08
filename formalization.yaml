@@ -1,4 +1,5 @@
 # formalization.yaml v0.3. Replace every TEMPLATE value before submitting.
+# A placeholder list may be replaced with [] when the honest answer is none.
 version: "v0.3"
 
 project:
@@ -13,15 +14,15 @@ project:
 repository:
   # Use thin-wrapper only when this repository merely exposes another pinned
   # formalization repository to Comparator; then add substantive_formalization.
-  role: "substantive-development"
+  role: "TEMPLATE: substantive-development or thin-wrapper"
   # substantive_formalization:
-  #   id: "owner/repository"
-  #   revision: "0000000000000000000000000000000000000000"
+  #   id: "TEMPLATE: owner/repository"
+  #   revision: "TEMPLATE: full lowercase commit SHA"
 
 classification:
   # Replace these with 1–2 arXiv categories and 1–8 MSC 2020 codes for the result.
-  arxiv: ["math.LO"]
-  msc2020: ["03B35"]
+  arxiv: ["TEMPLATE: arXiv category"]
+  msc2020: ["TEMPLATE: MSC 2020 code"]
 
 sources:
   # Sources are required. For a theorem first presented by this formalization,
@@ -29,16 +30,16 @@ sources:
   - title: "TEMPLATE: title of the mathematical source"
     authors:
       - "TEMPLATE: source author"
-    id: "https://example.com/replace-with-a-versioned-source"
+    id: "TEMPLATE: stable identifier or versioned URL"
     type: "TEMPLATE: paper, book, web discussion, folklore, original-proof, or other"
     location: "TEMPLATE: stable URL or bibliographic location, if available"
-    relationship: "formalizes"
+    relationship: "TEMPLATE: formalizes, adapts, independently-proves, background, or other"
     license: "TEMPLATE: source license or unknown"
-    author_endorsement: "not-contacted"
+    author_endorsement: "TEMPLATE: participated, endorsed, no-response, not-contacted, declined, or n/a"
 
 related_formalizations:
   - id: "TEMPLATE: stable URL or identifier for earlier formalization"
-    relationship: "builds-on"
+    relationship: "TEMPLATE: builds-on, adapts, independent, supersedes, or other"
     note: "TEMPLATE: explain the relationship"
 
 status:
@@ -46,22 +47,22 @@ status:
     TEMPLATE: state exactly what is and is not formalized, including any weaker
     theorem, changed hypotheses, or omitted material.
   # Count the proof development, excluding Challenge.lean's deliberate sorry.
-  sorry_count: 0
-  sorry_in_definitions: 0
-  axioms: []
+  sorry_count: "TEMPLATE: nonnegative integer"
+  sorry_in_definitions: "TEMPLATE: nonnegative integer"
+  axioms: ["TEMPLATE: declaration names, or replace this list with []"]
   main_results:
-    - declaration: "PalomarTemplate.main_result"
-      file: "Solution.lean"
-      sorry_count: 0
-      axioms: []
-      comparator_config: "comparator.json"
-      literature_dependencies: []
+    - declaration: "TEMPLATE: fully qualified Lean declaration"
+      file: "TEMPLATE: source file containing the proved declaration"
+      sorry_count: "TEMPLATE: nonnegative integer"
+      axioms: ["TEMPLATE: declaration names, or replace this list with []"]
+      comparator_config: "TEMPLATE: path to the Comparator configuration"
+      literature_dependencies: ["TEMPLATE: source identifiers, or replace this list with []"]
 
 automation:
   methods:
-    - method: "manual"
-      models: []
-      framework: ""
+    - method: "TEMPLATE: manual, AI-assisted, or other honest description"
+      models: ["TEMPLATE: model names, or replace this list with []"]
+      framework: "TEMPLATE: framework name, or n/a"
       tool_setup: "TEMPLATE: editors, tactics, agents, or other tools used"
       cost:
         wall_time: "TEMPLATE: approximate elapsed effort"
@@ -75,18 +76,18 @@ fidelity:
   divergences: "TEMPLATE: all known divergences from the cited source, or none known"
 
 review:
-  status: "self-assessed"
+  status: "TEMPLATE: review status"
   reviewers:
     - "TEMPLATE: reviewer name, or none"
   notes: "TEMPLATE: describe statement audits and mathematical review performed"
 
 alignment:
-  namespace: "PalomarTemplate"
+  namespace: "TEMPLATE: project namespace"
   statements:
     - source: "TEMPLATE: source theorem or section"
-      lean: "PalomarTemplate.main_result"
-      module: "Solution"
-      status: "proved"
+      lean: "TEMPLATE: fully qualified Lean declaration"
+      module: "TEMPLATE: Lean module containing the declaration"
+      status: "TEMPLATE: proved, partial, adapted, or other honest description"
       note: "TEMPLATE: explain the correspondence and any qualifications"
 
 acknowledgements: "TEMPLATE: libraries, tools, and people to credit"

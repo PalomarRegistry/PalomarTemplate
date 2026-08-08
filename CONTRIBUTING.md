@@ -7,7 +7,11 @@
 4. Update `comparator.json` with every advertised theorem and any definition
    holes. Definition holes require special editorial scrutiny.
 5. Replace every `TEMPLATE` value in `formalization.yaml` with honest,
-   independently checkable metadata. The template defaults to Apache-2.0; if
+   independently checkable metadata. Run
+   `ruby scripts/validate-formalization.rb`; it parses the file and lists every
+   retained sentinel, including deliberately invalid classification, proof,
+   automation, and review defaults. Replace a placeholder list with `[]` only
+   when none is the honest answer. The template defaults to Apache-2.0; if
    changing the repository licence, replace both `LICENSE` and
    `project.license` with one matching standard SPDX licence.
 6. Run `lake update` and `cd docbuild && lake update` after changing dependencies,

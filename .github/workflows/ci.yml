@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   license:
-    name: Check Apache licence default
+    name: Check metadata and Apache licence default
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -24,6 +24,20 @@ jobs:
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b
         with:
           ruby-version: "3.3.12"
+      - name: Test the metadata validator
+        run: ruby test/validate_formalization_test.rb
+      - name: Reject retained template values in derived repositories
+        env:
+          TEMPLATE_REPOSITORY: PalomarRegistry/PalomarTemplate
+        run: |
+          if [[ "$GITHUB_REPOSITORY" == "$TEMPLATE_REPOSITORY" ]]; then
+            if ruby scripts/validate-formalization.rb; then
+              echo "The canonical toy template must retain invalid TEMPLATE values" >&2
+              exit 1
+            fi
+            exit 0
+          fi
+          ruby scripts/validate-formalization.rb
       - name: Detect the repository licence
         run: |
           gem install licensee --version 10.0.0 --no-document
