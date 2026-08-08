@@ -19,15 +19,16 @@ the separation between the human-auditable statement and the proof.
   `project.license`.
 - `docbuild/` is the recommended nested doc-gen4 project.
 - `scripts/verify-comparator.sh` runs pinned Comparator, lean4export, NanoDa,
-  and Landrun revisions, and forces the independent NanoDa replay regardless
-  of `comparator.json`; `scripts/landrun-wrapper.sh` preserves lean4export's
-  command delimiter when invoked through Landrun's current CLI.
+  and Landrun revisions using the checked-in `comparator.json`, which enables
+  the independent NanoDa replay; `scripts/landrun-wrapper.sh` preserves
+  lean4export's command delimiter when invoked through Landrun's current CLI.
 
 The root uses `lakefile.toml`, a supported stable Lean toolchain, and committed
-Lake manifests. GitHub Actions builds the Lean project with `lean-action`,
-generates API documentation with doc-gen4, and independently checks the
-advertised statement with Comparator. Actions and verification tools are pinned
-to immutable commits.
+Lake manifests. The verifier reads `lean-toolchain` and checks that its pinned
+lean4export revision targets the same toolchain. GitHub Actions builds the Lean
+project with `lean-action`, generates API documentation with doc-gen4, and
+independently checks the advertised statement with Comparator. Actions and
+verification tools are pinned to immutable commits.
 
 ## Start a real project
 
@@ -51,7 +52,7 @@ to immutable commits.
    (cd docbuild && MATHLIB_NO_CACHE_ON_UPDATE=1 lake update)
    ```
 
-6. Run the same checks as CI:
+6. Run the project checks before submitting:
 
    ```text
    lake exe cache get
@@ -61,8 +62,10 @@ to immutable commits.
    ./scripts/verify-comparator.sh
    ```
 
-   Run the final command from the repository root. It requires Linux, Git, Go,
-   Rust/Cargo, Python 3, and a working Landrun sandbox.
+   CI runs the corresponding build, documentation, and Comparator checks; the
+   cache and placeholder commands are additional local preflight checks. Run
+   the final command from the repository root. It requires Linux, Git, Go,
+   Rust/Cargo, and a working Landrun sandbox.
 
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),
