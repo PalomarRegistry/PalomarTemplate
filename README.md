@@ -38,6 +38,10 @@ commits.
 2. Rename `PalomarTemplate` in the Lake package, module directory, namespace,
    Comparator declaration, and metadata.
 3. Replace the example library, `Challenge.lean`, and `Solution.lean`.
+   Keep `Challenge.lean` as the small statement-only surface, with one `sorry`
+   for each advertised declaration; put the proofs in `Solution.lean`, where
+   Comparator checks them against those statements. The proof-status counts in
+   `formalization.yaml` exclude the deliberate Challenge `sorry`s.
 4. Replace every `TEMPLATE` value in `formalization.yaml`. Values that might
    otherwise look like plausible defaults—including repository role,
    classifications, proof counts, automation method, and review status—are
@@ -72,6 +76,15 @@ commits.
    dependencies retain their own licences.
 5. Update and commit dependency pins:
 
+   Before fetching and building the dependency closure, budget several GiB of
+   free space. After the root cache fetch and build, a clean local checkout of
+   the template's pinned Lean v4.32.0 manifest occupied about 7.7 GiB across
+   about 123,000 files under `.lake/`. The documentation build adds doc-gen4 and
+   its dependency closure under the shared `.lake/packages/` plus generated
+   output under `docbuild/.lake/`. The precise footprint changes with the
+   filesystem, cache contents, and any dependency updates. Both `.lake/`
+   directories are generated and must not be committed.
+
    ```text
    lake update
    (cd docbuild && MATHLIB_NO_CACHE_ON_UPDATE=1 lake update)
@@ -100,6 +113,11 @@ commits.
    and Comparator checks. Run the final command from the repository root. The
    full check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3, and a
    working Landrun sandbox.
+
+   The pinned `lean-action` likewise runs `lake exe cache get` in CI and caches
+   `.lake/`. A successful canonical starter run deliberately includes the
+   statement-surface `sorry` warning and demonstrates the wiring, not submission
+   completeness.
 
 7. Read the current
    [Palomar submission policy](https://github.com/PalomarRegistry/PalomarPolicy/blob/main/CONTRIBUTING.md),

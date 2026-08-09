@@ -50,13 +50,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Check the submission form the README names
-        # The README sent a new submitter to an issue form that had already
-        # been deleted, in the repository Palomar recommends by name as a
-        # starting point. Deleting the bad link is not enough on its own: a
-        # README with no link at all, or with a misspelt host, would have
-        # passed that. So assert the destination as well as refusing the old
-        # one, and refuse only the Palomar issue form, because linking some
-        # other project's issue tracker is nobody's mistake.
+        # Require the current destination as well as rejecting the retired one;
+        # a missing or misspelt link would pass a negative-only check. Limit the
+        # rejection to Palomar's form because other issue trackers are valid.
         run: |
           python3 - <<'PY'
           import pathlib
