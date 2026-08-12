@@ -16,15 +16,14 @@ project:
   responsible_maintainers:
     - "TEMPLATE: person responsible for this formalization"
 
-repository:
-  # Use substantive-development and omit substantive_formalization when this is
-  # the substantive repository. Use thin-wrapper only when this repository
-  # merely exposes another pinned formalization repository to Comparator; then
-  # add substantive_formalization in the exact shape below.
-  role: "TEMPLATE: substantive-development or thin-wrapper"
-  # substantive_formalization:
-  #   id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
-  #   revision: "TEMPLATE: full 40-character lowercase commit SHA"
+# Omit repository for an ordinary project: Palomar treats this submitted
+# repository as the substantive proof development. If this repository is only
+# a thin Comparator wrapper, uncomment and pin the actual formalization in this
+# exact shape:
+# repository:
+#   substantive_formalization:
+#     id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
+#     revision: "TEMPLATE: full 40-character lowercase commit SHA"
 
 classification:
   # Use 1–2 official arXiv identifiers such as math.LO and 1–8 five-character

@@ -12,7 +12,6 @@ module FormalizationTemplate
     "$.project.name",
     "$.project.authors[0]",
     "$.project.responsible_maintainers[0]",
-    "$.repository.role",
     "$.classification.arxiv[0]",
     "$.classification.msc2020[0]",
     "$.sources[0].title",
