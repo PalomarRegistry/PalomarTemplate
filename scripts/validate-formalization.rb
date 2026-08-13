@@ -34,7 +34,8 @@ module FormalizationTemplate
     "$.status.main_results[0].sorry_count",
     "$.status.main_results[0].axioms[0]",
     "$.status.main_results[0].comparator_config",
-    "$.status.main_results[0].literature_dependencies[0]",
+    "$.status.main_results[0].literature_dependencies[0].statement",
+    "$.status.main_results[0].literature_dependencies[0].source",
     "$.automation.methods[0].method",
     "$.automation.methods[0].models[0]",
     "$.automation.methods[0].framework",
@@ -105,6 +106,10 @@ module FormalizationTemplate
 
   def self.validate(path, expect_template: false)
     document = load_document(path)
+    unless document["version"] == "v0.4"
+      raise ValidationError,
+            "#{path} $.version must be \"v0.4\", not #{document["version"].inspect}"
+    end
     actual_license = document.dig("project", "license")
     unless actual_license == REQUIRED_LICENSE
       raise ValidationError, <<~MESSAGE.chomp

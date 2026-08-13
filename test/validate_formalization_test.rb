@@ -13,6 +13,7 @@ class ValidateFormalizationTest < Minitest::Test
   SCRIPT = ROOT / "scripts/validate-formalization.rb"
 
   CUSTOMIZED_YAML = <<~YAML
+    version: v0.4
     project:
       name: Example
       license: Apache-2.0
@@ -42,6 +43,15 @@ class ValidateFormalizationTest < Minitest::Test
   def test_accepts_customized_yaml
     metadata(CUSTOMIZED_YAML) do |path|
       assert_empty FormalizationTemplate.validate(path)
+    end
+  end
+
+  def test_requires_v0_4
+    metadata(CUSTOMIZED_YAML.sub("version: v0.4", "version: v0.3")) do |path|
+      error = assert_raises(FormalizationTemplate::ValidationError) do
+        FormalizationTemplate.validate(path)
+      end
+      assert_includes error.message, '$.version must be "v0.4", not "v0.3"'
     end
   end
 

@@ -1,7 +1,8 @@
-# formalization.yaml v0.3. Replace every TEMPLATE value before submitting.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4. Replace every TEMPLATE value before submitting.
 # Replace a placeholder list with [] only when its adjacent comment permits it;
 # lists described as required must remain nonempty.
-version: "v0.3"
+version: "v0.4"
 
 project:
   name: "TEMPLATE: name of the formalization"
@@ -45,7 +46,7 @@ sources:
   # Type, authors, id, location, license, and author_endorsement are optional;
   # remove them when genuinely inapplicable. A supplied type must be paper,
   # book, web discussion, folklore, original-proof, or other. In the current
-  # v0.3 Palomar contract, web discussion is spelled with a space.
+  # Palomar's v0.4 profile spells web discussion with a space.
   # Original-result example:
   # - title: "TEMPLATE: describe the result first presented here"
   #   type: original-proof
@@ -81,11 +82,13 @@ status:
       sorry_count: "TEMPLATE: unquoted nonnegative integer"
       axioms: ["TEMPLATE: declaration names, or replace this list with []"]
       comparator_config: "TEMPLATE: path to the Comparator configuration"
-      literature_dependencies: ["TEMPLATE: source identifiers, or replace this list with []"]
+      literature_dependencies:
+        - statement: "TEMPLATE: result relied on but not proved"
+          source: "TEMPLATE: matching sources entry or stable citation"
 
 automation:
   methods:
-    - method: "TEMPLATE: manual, AI-assisted, or other honest description"
+    - method: "TEMPLATE: manual, copilot, agent, autonomous, or other"
       models: ["TEMPLATE: model names, or replace this list with []"]
       framework: "TEMPLATE: framework name, or n/a"
       tool_setup: "TEMPLATE: editors, tactics, agents, or other tools used"

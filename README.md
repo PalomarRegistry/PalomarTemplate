@@ -61,8 +61,8 @@ commits.
    Every source needs a title and relationship. Its `type`, authors, identifier,
    location, licence, and endorsement may be removed when genuinely
    inapplicable. A retained type must be exactly `paper`, `book`,
-   `web discussion`, `folklore`, `original-proof`, or `other`; in the current
-   v0.3 Palomar contract, `web discussion` is spelled with a space. Set
+   `web discussion`, `folklore`, `original-proof`, or `other`; in Palomar's
+   v0.4 profile, `web discussion` is spelled with a space. Set
    `repository.role` to `substantive-development` and omit
    `substantive_formalization`, or set it to `thin-wrapper` and provide the
    underlying `owner/repository` or `https://github.com/owner/repository` URL
