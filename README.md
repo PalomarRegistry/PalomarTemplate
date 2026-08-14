@@ -21,7 +21,8 @@ the separation between the human-auditable statement and the proof.
 - `scripts/verify-comparator.sh` runs pinned Comparator, lean4export, NanoDa,
   and Landrun revisions using the checked-in `comparator.json`, which enables
   the independent NanoDa replay; `scripts/landrun-wrapper.sh` preserves
-  lean4export's command delimiter when invoked through Landrun's current CLI.
+  lean4export's command delimiter when invoked through Landrun's current CLI
+  and refuses any Comparator request to switch off part of the sandbox.
 
 The root uses `lakefile.toml`, a supported stable Lean toolchain, and committed
 Lake manifests. The verifier reads `lean-toolchain` and checks that its pinned

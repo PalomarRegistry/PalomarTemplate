@@ -74,6 +74,16 @@ jobs:
           raise SystemExit(failed)
           PY
 
+  sandbox:
+    name: Check the Landrun wrapper's flag policy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Test the Landrun wrapper
+        run: ./test/landrun_wrapper_test.sh
+
   build:
     name: Build with Lean
     runs-on: ubuntu-latest
