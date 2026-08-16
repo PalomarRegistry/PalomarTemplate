@@ -44,9 +44,10 @@ sources:
   #   formalizes, adapts, or independently-proves relationship. A new proof of
   #   a known published result is source-based and uses independently-proves.
   # Type, authors, id, location, license, and author_endorsement are optional;
-  # remove them when genuinely inapplicable. A supplied type must be paper,
-  # book, web discussion, folklore, original-proof, or other. In the current
-  # Palomar's v0.4 profile spells web discussion with a space.
+  # remove them when genuinely inapplicable. Type is a concise free-text
+  # description such as article, paper, book, formalization, web post, folklore,
+  # conversation, or other. The exact value original-proof is reserved for the
+  # result-origin declaration described above.
   # Original-result example:
   # - title: "TEMPLATE: describe the result first presented here"
   #   type: original-proof
@@ -55,7 +56,7 @@ sources:
     authors:
       - "TEMPLATE: source author"
     id: "TEMPLATE: stable identifier or versioned URL"
-    type: "TEMPLATE: paper, book, web discussion, folklore, original-proof, or other"
+    type: "TEMPLATE: concise source kind, for example article, book, or formalization"
     location: "TEMPLATE: stable URL or bibliographic location, if available"
     relationship: "TEMPLATE: formalizes, adapts, independently-proves, background, or other"
     license: "TEMPLATE: source license or unknown"
