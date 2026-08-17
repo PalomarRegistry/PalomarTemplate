@@ -20,6 +20,7 @@ module FormalizationTemplate
     "$.sources[0].type",
     "$.sources[0].location",
     "$.sources[0].relationship",
+    "$.sources[0].note",
     "$.sources[0].license",
     "$.sources[0].author_endorsement",
     "$.related_formalizations[0].id",

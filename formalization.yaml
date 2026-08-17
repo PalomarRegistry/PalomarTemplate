@@ -43,7 +43,7 @@ sources:
   # - Otherwise, omit type: original-proof and give at least one source a
   #   formalizes, adapts, or independently-proves relationship. A new proof of
   #   a known published result is source-based and uses independently-proves.
-  # Type, authors, id, location, license, and author_endorsement are optional;
+  # Type, authors, id, location, note, license, and author_endorsement are optional;
   # remove them when genuinely inapplicable. Type is a concise free-text
   # description such as article, paper, book, formalization, web post, folklore,
   # conversation, or other. The exact value original-proof is reserved for the
@@ -58,14 +58,15 @@ sources:
     id: "TEMPLATE: stable identifier or versioned URL"
     type: "TEMPLATE: concise source kind, for example article, book, or formalization"
     location: "TEMPLATE: stable URL or bibliographic location, if available"
-    relationship: "TEMPLATE: free text; standard meanings include formalizes, adapts, independently-proves, background, and other"
+    relationship: "TEMPLATE: formalizes, adapts, independently-proves, background, or other"
+    note: "TEMPLATE: explain relationship or author_endorsement: other; otherwise remove"
     license: "TEMPLATE: source license or unknown"
-    author_endorsement: "TEMPLATE: free text; e.g. participated, endorsed, no-response, not-contacted, declined, or n/a"
+    author_endorsement: "TEMPLATE: participated, endorsed, no-response, not-contacted, declined, n/a, or other"
 
 related_formalizations:
   # Remove this field or use [] when none are known.
   - id: "TEMPLATE: stable URL or identifier for earlier formalization"
-    relationship: "TEMPLATE: free text; e.g. builds-on, adapts, independent, supersedes, or other"
+    relationship: "TEMPLATE: builds-on, adapts, independent, supersedes, or other"
     note: "TEMPLATE: explain the relationship"
 
 status:
@@ -89,10 +90,10 @@ status:
 
 automation:
   methods:
-    - method: "TEMPLATE: free text; e.g. manual, copilot, agent, autonomous, or AI-assisted"
+    - method: "TEMPLATE: manual, copilot, agent, autonomous, or other"
       models: ["TEMPLATE: model names, or replace this list with []"]
       framework: "TEMPLATE: framework name, or n/a"
-      tool_setup: "TEMPLATE: editors, tactics, agents, or other tools used"
+      tool_setup: "TEMPLATE: exact detail, such as AI-assisted, editors, tactics, agents, or other tools used"
       cost:
         wall_time: "TEMPLATE: approximate elapsed effort"
         spend_usd: "TEMPLATE: amount, subscription-based, or not tracked"
