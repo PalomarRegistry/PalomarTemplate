@@ -13,8 +13,8 @@ the separation between the human-auditable statement and the proof.
 - `Solution.lean` connects the same declaration to the completed proof.
 - `PalomarTemplate/` contains the full proof development.
 - `comparator.json` tells Comparator which declarations must match.
-- `formalization.yaml` records provenance, authorship, automation, fidelity,
-  and review information.
+- `formalization.yaml` records the public result description, provenance,
+  authorship, automation, fidelity, and review information.
 - `LICENSE` contains the Apache License 2.0 terms declared by
   `project.license`.
 - `docbuild/` is the recommended nested doc-gen4 project.
@@ -49,6 +49,9 @@ commits.
    deliberately invalid until you choose them. Replace a placeholder list with
    an empty list only where its adjacent comment permits that; lists described
    as required must remain nonempty.
+   Write `project.description` as the concise public registry abstract. It
+   must point to every theorem and definition selected by `comparator.json`,
+   though the README and Challenge documentation can carry the fuller account.
    The `sources` list must remain nonempty. Every source relationship must be
    exactly `formalizes`, `adapts`, `independently-proves`, `background`, or
    `other`. Choose one result origin: for a result first presented by the

@@ -6,6 +6,9 @@ version: "v0.4"
 
 project:
   name: "TEMPLATE: name of the formalization"
+  description: >-
+    TEMPLATE: concise public account of the mathematical content and principal
+    results selected by comparator.json
   # Required nonempty list of name strings or mappings with a nonempty name.
   authors:
     - "TEMPLATE: formalizer name"

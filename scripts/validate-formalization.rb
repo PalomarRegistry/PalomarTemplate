@@ -10,6 +10,7 @@ module FormalizationTemplate
   REQUIRED_SECTIONS = %w[project classification automation review].freeze
   EXPECTED_TEMPLATE_PATHS = [
     "$.project.name",
+    "$.project.description",
     "$.project.authors[0]",
     "$.project.responsible_maintainers[0]",
     "$.classification.arxiv[0]",
@@ -117,6 +118,11 @@ module FormalizationTemplate
         #{path} $.project.license must be #{REQUIRED_LICENSE.inspect}, not #{actual_license.inspect}.
         Keep the repository's Apache-2.0 LICENSE file unchanged and set project.license to #{REQUIRED_LICENSE.inspect}.
       MESSAGE
+    end
+    description = document.dig("project", "description")
+    unless description.is_a?(String) && !description.strip.empty? && description.strip.length <= 10_000
+      raise ValidationError,
+            "#{path} $.project.description must be nonempty text of at most 10000 characters"
     end
 
     placeholders = placeholder_paths(document)

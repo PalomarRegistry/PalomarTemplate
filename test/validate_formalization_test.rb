@@ -16,6 +16,7 @@ class ValidateFormalizationTest < Minitest::Test
     version: v0.4
     project:
       name: Example
+      description: A concise account of the example result.
       license: Apache-2.0
     classification:
       arxiv: [math.LO]
@@ -69,6 +70,15 @@ class ValidateFormalizationTest < Minitest::Test
         FormalizationTemplate.validate(path)
       end
       assert_includes error.message, "$.project.license must be \"Apache-2.0\", not nil"
+    end
+  end
+
+  def test_requires_a_bounded_public_description
+    metadata(CUSTOMIZED_YAML.sub("  description: A concise account of the example result.\n", "")) do |path|
+      error = assert_raises(FormalizationTemplate::ValidationError) do
+        FormalizationTemplate.validate(path)
+      end
+      assert_includes error.message, "$.project.description must be nonempty text"
     end
   end
 
