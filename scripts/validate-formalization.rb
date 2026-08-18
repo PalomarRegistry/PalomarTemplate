@@ -17,6 +17,8 @@ module FormalizationTemplate
     "$.classification.msc2020[0]",
     "$.sources[0].title",
     "$.sources[0].authors[0]",
+    "$.sources[0].contributors[0].name",
+    "$.sources[0].contributors[0].role",
     "$.sources[0].id",
     "$.sources[0].type",
     "$.sources[0].location",

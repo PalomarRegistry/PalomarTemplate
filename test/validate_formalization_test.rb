@@ -102,10 +102,19 @@ class ValidateFormalizationTest < Minitest::Test
   def test_reports_placeholders_inside_arrays_of_mappings
     document = {
       "sources" => [
-        {"authors" => [{"name" => "TEMPLATE: source author"}]}
+        {
+          "authors" => [{"name" => "TEMPLATE: source author"}],
+          "contributors" => [
+            {"name" => "TEMPLATE: editor", "role" => "TEMPLATE: editor role"}
+          ]
+        }
       ]
     }
-    assert_equal ["$.sources[0].authors[0].name"],
+    assert_equal [
+      "$.sources[0].authors[0].name",
+      "$.sources[0].contributors[0].name",
+      "$.sources[0].contributors[0].role"
+    ],
                  FormalizationTemplate.placeholder_paths(document)
   end
 

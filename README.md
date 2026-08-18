@@ -65,12 +65,14 @@ commits.
    relationship. A new proof of a known published result is source-based and
    uses `independently-proves`, not `original-proof`.
 
-   Every source needs a title and relationship. Its `type`, authors, identifier,
-   location, licence, and endorsement may be removed when genuinely
-   inapplicable. A retained type is a concise free-text description such as
-   `article`, `paper`, `book`, `formalization`, `web post`, `folklore`,
-   or `conversation`. The exact value `original-proof` is reserved for the
-   result-origin declaration above. Set
+   Every source needs a title and relationship. Its `type`, authors,
+   contributors, identifier, location, licence, and endorsement may be removed
+   when genuinely inapplicable. Use authors only for bibliographic authorship;
+   use contributors with a name and free-form role for credits such as editors
+   and problem proposers. A retained type is a concise free-text description
+   such as `article`, `paper`, `book`, `formalization`, `web post`,
+   `folklore`, or `conversation`. The exact value `original-proof` is
+   reserved for the result-origin declaration above. Set
    `repository.role` to `substantive-development` and omit
    `substantive_formalization`, or set it to `thin-wrapper` and provide the
    underlying `owner/repository` or `https://github.com/owner/repository` URL

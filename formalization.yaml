@@ -46,8 +46,11 @@ sources:
   # - Otherwise, omit type: original-proof and give at least one source a
   #   formalizes, adapts, or independently-proves relationship. A new proof of
   #   a known published result is source-based and uses independently-proves.
-  # Type, authors, id, location, note, license, and author_endorsement are optional;
-  # remove them when genuinely inapplicable. Type is a concise free-text
+  # Type, authors, contributors, id, location, note, license, and
+  # author_endorsement are optional; remove them when genuinely inapplicable.
+  # Authors are bibliographic authors. Contributors record other source roles,
+  # with one name and free-form role such as editor or problem-proposer.
+  # Type is a concise free-text
   # description such as article, paper, book, formalization, web post, folklore,
   # conversation, or other. The exact value original-proof is reserved for the
   # result-origin declaration described above.
@@ -58,6 +61,9 @@ sources:
   - title: "TEMPLATE: title of the mathematical source"
     authors:
       - "TEMPLATE: source author"
+    contributors:
+      - name: "TEMPLATE: source contributor"
+        role: "TEMPLATE: contributor role, for example editor or problem-proposer"
     id: "TEMPLATE: stable identifier or versioned URL"
     type: "TEMPLATE: concise source kind, for example article, book, or formalization"
     location: "TEMPLATE: stable URL or bibliographic location, if available"
