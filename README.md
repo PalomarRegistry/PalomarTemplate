@@ -49,9 +49,12 @@ commits.
    deliberately invalid until you choose them. Replace a placeholder list with
    an empty list only where its adjacent comment permits that; lists described
    as required must remain nonempty.
-   Write `project.description` as the concise public registry abstract. It
-   must point to every theorem and definition selected by `comparator.json`,
-   though the README and Challenge documentation can carry the fuller account.
+   Write `project.description` as the concise public registry abstract for the
+   formalization as a whole. It should let a mathematical reader identify the
+   subject and principal result families; it is not an inventory of Comparator
+   declarations, and the README and Challenge documentation can carry the
+   fuller account. `status.main_results` is optional: add it only when a short
+   curated project-level list is useful, not to mirror Comparator declarations.
    The `sources` list must remain nonempty. Every source relationship must be
    exactly `formalizes`, `adapts`, `independently-proves`, `background`, or
    `other`. Choose one result origin: for a result first presented by the

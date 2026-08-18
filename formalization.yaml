@@ -8,7 +8,7 @@ project:
   name: "TEMPLATE: name of the formalization"
   description: >-
     TEMPLATE: concise public account of the mathematical content and principal
-    results selected by comparator.json
+    results of the formalization
   # Required nonempty list of name strings or mappings with a nonempty name.
   authors:
     - "TEMPLATE: formalizer name"
@@ -81,15 +81,8 @@ status:
   sorry_count: "TEMPLATE: unquoted nonnegative integer"
   sorry_in_definitions: "TEMPLATE: unquoted nonnegative integer"
   axioms: ["TEMPLATE: declaration names, or replace this list with []"]
-  main_results:
-    - declaration: "TEMPLATE: fully qualified Lean declaration"
-      file: "TEMPLATE: source file containing the proved declaration"
-      sorry_count: "TEMPLATE: unquoted nonnegative integer"
-      axioms: ["TEMPLATE: declaration names, or replace this list with []"]
-      comparator_config: "TEMPLATE: path to the Comparator configuration"
-      literature_dependencies:
-        - statement: "TEMPLATE: result relied on but not proved"
-          source: "TEMPLATE: matching sources entry or stable citation"
+  # status.main_results is optional. Add it only when a short curated
+  # project-level list is useful; it need not mirror Comparator declarations.
 
 automation:
   methods:
