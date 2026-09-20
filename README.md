@@ -88,12 +88,13 @@ commits.
 
    Before fetching and building the dependency closure, budget several GiB of
    free space. After the root cache fetch and build, a clean local checkout of
-   the template's pinned Lean v4.32.0 manifest occupied about 7.7 GiB across
-   about 123,000 files under `.lake/`. The documentation build adds doc-gen4 and
-   its dependency closure under the shared `.lake/packages/` plus generated
-   output under `docbuild/.lake/`. The precise footprint changes with the
-   filesystem, cache contents, and any dependency updates. Both `.lake/`
-   directories are generated and must not be committed.
+   the template's pinned manifest occupied about 7.7 GiB across about 123,000
+   files under `.lake/` when last measured, on Lean v4.32.0. The documentation
+   build adds doc-gen4 and its dependency closure under the shared
+   `.lake/packages/` plus generated output under `docbuild/.lake/`. The
+   precise footprint changes with the filesystem, cache contents, and any
+   dependency updates. Both `.lake/` directories are generated and must not be
+   committed.
 
    ```text
    lake update
