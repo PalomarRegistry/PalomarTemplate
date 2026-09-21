@@ -111,6 +111,44 @@ for flag in --unrestricted-filesystem --unrestricted-network --unrestricted-scop
   assert_refused "$flag is refused" "$flag" --best-effort "$flag" --ro / true
 done
 
+# Comparator supplies its own `--` from v4.34.0 on. The wrapper must treat it
+# as the end of Landrun's options rather than as an unknown flag, and must
+# still hand Landrun exactly one delimiter.
+assert_passthrough "Comparator's own -- ends the option list" \
+  '--best-effort
+--ro
+/
+--
+lake
+build
+Solution' \
+  --best-effort --ro / -- lake build Solution
+
+assert_passthrough "-- is not duplicated when Comparator omits it" \
+  '--best-effort
+--
+true' \
+  --best-effort true
+
+# The refusal has to survive the delimiter being available: a flag that widens
+# the sandbox still stops the run when it arrives as a Landrun option.
+assert_refused "--unrestricted-filesystem before -- is still refused" \
+  "--unrestricted-filesystem" --best-effort --unrestricted-filesystem -- true
+
+# ...but after the delimiter it belongs to the sandboxed command, exactly as an
+# argument after a bare command does.
+assert_passthrough "--unrestricted-filesystem after -- is a command argument" \
+  '--best-effort
+--
+solver
+--unrestricted-filesystem' \
+  --best-effort -- solver --unrestricted-filesystem
+
+run_wrapper --best-effort --
+if [ "$wrapper_status" -ne 2 ]; then
+  report_failure "a bare -- with no command is refused: wrapper exited $wrapper_status, expected 2"
+fi
+
 assert_refused "an unknown flag is refused" "--brand-new-flag" --brand-new-flag true
 assert_refused "a flag missing its value is refused" "--ro" --ro
 run_wrapper --best-effort
