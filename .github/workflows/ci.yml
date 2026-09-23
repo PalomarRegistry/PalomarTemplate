@@ -74,16 +74,6 @@ jobs:
           raise SystemExit(failed)
           PY
 
-  sandbox:
-    name: Check the Landrun wrapper's flag policy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - name: Test the Landrun wrapper
-        run: ./test/landrun_wrapper_test.sh
-
   build:
     name: Build with Lean
     runs-on: ubuntu-latest
@@ -131,9 +121,9 @@ jobs:
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
         with:
           build: false
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
-        with:
-          go-version: "1.24.0"
-          cache: false
-      - name: Run pinned Comparator toolchain
+      - name: Install bubblewrap for lake comparator's sandbox
+        run: |
+          sudo apt-get update -qq >/dev/null
+          sudo apt-get install -y -qq bubblewrap >/dev/null
+      - name: Run the toolchain's lake comparator
         run: ./scripts/verify-comparator.sh
