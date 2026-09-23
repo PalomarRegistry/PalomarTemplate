@@ -122,8 +122,11 @@ jobs:
         with:
           build: false
       - name: Install bubblewrap for lake comparator's sandbox
+        # Ubuntu 24.04 restricts unprivileged user namespaces through AppArmor,
+        # which `bwrap` needs for the sandbox; the runner is disposable.
         run: |
           sudo apt-get update -qq >/dev/null
           sudo apt-get install -y -qq bubblewrap >/dev/null
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
       - name: Run the toolchain's lake comparator
         run: ./scripts/verify-comparator.sh
