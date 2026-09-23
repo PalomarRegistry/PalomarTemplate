@@ -12,26 +12,25 @@ the separation between the human-auditable statement and the proof.
 - `Challenge.lean` is the small statement surface a reader audits.
 - `Solution.lean` connects the same declaration to the completed proof.
 - `PalomarTemplate/` contains the full proof development.
-- `comparator.json` tells Comparator which declarations must match.
+- `comparator.json` tells `lake comparator` which declarations must match.
 - `formalization.yaml` records the public result description, provenance,
   authorship, automation, fidelity, and review information.
 - `LICENSE` contains the Apache License 2.0 terms declared by
   `project.license`.
 - `docbuild/` is the recommended nested doc-gen4 project.
-- `scripts/verify-comparator.sh` runs pinned Comparator, lean4export, NanoDa,
-  and Landrun revisions using the checked-in `comparator.json`, which enables
-  the independent NanoDa replay; `scripts/landrun-wrapper.sh` preserves
-  lean4export's command delimiter when invoked through Landrun's current CLI
-  and refuses any Comparator request to switch off part of the sandbox.
+- `scripts/verify-comparator.sh` runs the `lake comparator` that ships in
+  this project's own toolchain over the checked-in `comparator.json`,
+  registering the toolchain's bundled independent kernels (NanoDa and con-ron)
+  exactly as Palomar does; the optional `enable_nanoda` field is ignored, and
+  `external_kernels` is not a submitter field.
 
-The root uses `lakefile.toml`, a supported stable Lean toolchain, and committed
-Lake manifests. The verifier reads `lean-toolchain` and checks that its pinned
-lean4export revision targets the same toolchain. When changing that exporter
-pin, review whether Comparator and NanoDa remain compatible with its export
-format. GitHub Actions builds the Lean project with `lean-action`, generates API
-documentation with doc-gen4, and independently checks the advertised statement
-with Comparator. Actions and verification tools are pinned to immutable
-commits.
+The root uses `lakefile.toml`, a supported Lean toolchain (Palomar requires
+`leanprover/lean4:v4.35.0-rc2` or later, which is where `lake comparator`
+appears), and committed Lake manifests. Everything that judges a submission
+comes from `lean-toolchain`; there is no separate verifier pin to keep in step
+with it. GitHub Actions builds the Lean project with `lean-action`, generates
+API documentation with doc-gen4, and independently checks the advertised
+statement with `lake comparator`. Actions are pinned to immutable commits.
 
 ## Start a real project
 
@@ -121,9 +120,10 @@ commits.
    other repository—including standalone forks and repositories made with
    **Use this template**—runs the ordinary command and requires every sentinel
    to be replaced. CI also runs the corresponding build, documentation, cache,
-   and Comparator checks. Run the final command from the repository root. The
-   full check set requires Linux, Git, Go, Ruby, Rust/Cargo, Python 3, and a
-   working Landrun sandbox.
+   and `lake comparator` checks. Run the final command from the repository
+   root. The full check set requires Linux, Git, Ruby, Python 3, and
+   `bwrap` (bubblewrap), which `lake comparator` uses to sandbox the build it
+   judges.
 
    The pinned `lean-action` likewise runs `lake exe cache get` in CI and caches
    `.lake/`. A successful canonical starter run deliberately includes the
