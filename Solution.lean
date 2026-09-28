@@ -1,4 +1,8 @@
-import PalomarTemplate
+module
+
+public import PalomarTemplate
+
+public section
 
 /-!
 # Proved solution

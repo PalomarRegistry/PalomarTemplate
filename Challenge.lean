@@ -1,4 +1,8 @@
-import Mathlib.Data.Nat.Basic
+module
+
+public import Mathlib.Data.Nat.Basic
+
+public section
 
 /-!
 # Advertised statement

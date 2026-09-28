@@ -1,2 +1,4 @@
-import PalomarTemplate.Basic
+module
+
+public import PalomarTemplate.Basic
 
