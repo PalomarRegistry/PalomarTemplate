@@ -8,6 +8,16 @@ import re
 from pathlib import Path
 
 COMMENT_MARKER = re.compile(r"/-|-/")
+# Lean 4 Init/Meta/Defs.lean identifier characters; Python Unicode classes
+# are broader. A qualified identifier also continues across a dot.
+ID_LETTER_LIKE = (
+    r"\u03b1-\u03ba\u03bc-\u03c9\u0391-\u039f\u03a1-\u03a2\u03a4-\u03a9"
+    r"\u03ca-\u03fb\u1f00-\u1ffe\u2100-\u214f\U0001d49c-\U0001d59f"
+    r"\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u017f"
+)
+ID_FIRST = rf"A-Za-z_{ID_LETTER_LIKE}"
+ID_REST = rf"{ID_FIRST}0-9'!?\u2080-\u2089\u2090-\u209c\u1d62-\u1d6a\u2c7c"
+IDENTIFIER_CONTINUATION = re.compile(rf"[{ID_REST}]|\.[{ID_FIRST}«]")
 
 
 def has_module_header(text: str) -> bool:
@@ -39,9 +49,7 @@ def has_module_header(text: str) -> bool:
                 return False
         else:
             return text.startswith("module", index) and (
-                index + 6 == len(text)
-                or text[index + 6] in " \r\n"
-                or text.startswith(("--", "/-"), index + 6)
+                IDENTIFIER_CONTINUATION.match(text, index + 6) is None
             )
     return False
 
