@@ -40,8 +40,10 @@ projects, and local path dependencies. Ordinary comments may precede the
 count. LF and CRLF each delimit one line; an unterminated final line counts,
 and a final newline does not add an empty line.
 
-Lake configuration files named `lakefile.lean`, files below `.git` or `.lake`,
-and symbolic links are excluded from this source rule. Separately declared
+Lake configuration files named `lakefile.lean` are exempt from the module
+header requirement, but still have the 10,000-line cap. Files below `.git` or
+`.lake` are excluded; submitted `.lean` symbolic links are rejected so a link
+cannot hide an oversized source file. Separately declared
 substantive source repositories for thin wrappers receive the same checks.
 External pinned Git dependencies are outside this per-file limit; Lean still
 checks their compatibility with the module system. The existing Challenge
@@ -54,8 +56,9 @@ import, and expose definitions whose bodies clients need. See
 Rebuild and rerun Comparator after porting. Split oversized files into smaller
 modules or reduce generated certificates; do not hide them in excluded paths.
 
-The submission form and HTTPS intake check a bounded subset at the exact
-commit and report incomplete scans explicitly. The verifier scans the complete
+The submission form and HTTPS intake check a bounded subset of the submitted
+repository at the exact commit and report incomplete scans explicitly. They do
+not scan separately declared substantive repositories; preparation checks those. The verifier scans the complete
 checkout before builds and confirms headers with Lean's parser before running
 submitted Lake code. Violations identify the file and require a corrected new
 commit. These rules apply to new ordinary submissions and revisions; metadata

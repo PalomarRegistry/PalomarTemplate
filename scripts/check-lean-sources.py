@@ -4,7 +4,10 @@
 Scanner functions follow PalomarSubmission/scripts/source_requirements.py.
 """
 import os
+import re
 from pathlib import Path
+
+COMMENT_MARKER = re.compile(r"/-|-/")
 
 
 def has_module_header(text: str) -> bool:
@@ -12,7 +15,7 @@ def has_module_header(text: str) -> bool:
 
     Documentation comments are commands, not header whitespace. Do not strip a
     BOM or arbitrary Unicode whitespace: Lean's header parser does not either.
-    This cheap check precedes builds; Palomar confirms with --deps-json.
+    This cheap check precedes installation; execute confirms with --deps-json.
     """
     index = 0
     while index < len(text):
@@ -22,17 +25,16 @@ def has_module_header(text: str) -> bool:
             end = text.find("\n", index + 2)
             index = len(text) if end < 0 else end + 1
         elif text.startswith("/-", index) and not text.startswith(("/--", "/-!"), index):
-            index += 2
+            # Lean consumes the character after the plain opener before
+            # scanning its body (unlike nested openers). Match its parser.
+            index += 3
             depth = 1
-            while depth and index < len(text):
-                if text.startswith("/-", index):
-                    depth += 1
-                    index += 2
-                elif text.startswith("-/", index):
-                    depth -= 1
-                    index += 2
-                else:
-                    index += 1
+            while depth:
+                marker = COMMENT_MARKER.search(text, index)
+                if marker is None:
+                    break
+                depth += 1 if marker.group() == "/-" else -1
+                index = marker.end()
             if depth:
                 return False
         else:
@@ -50,9 +52,9 @@ def physical_lines(text: str) -> int:
 
 
 def lean_source_files(root: Path) -> list[Path]:
-    """All regular Lean sources, including contained projects/path dependencies.
+    """Lean source paths, including contained projects and symlinks to reject.
 
-    Lake configuration and generated/dependency state are separate contracts.
+    Lake configuration shares the line cap, but is exempt from module headers.
     Never traverse symlinks or Git internals.
     """
     files = []
@@ -63,7 +65,7 @@ def lean_source_files(root: Path) -> list[Path]:
         )
         for name in sorted(names):
             path = Path(directory) / name
-            if name.endswith(".lean") and name != "lakefile.lean" and not path.is_symlink() and path.is_file():
+            if name.endswith(".lean") and (path.is_symlink() or path.is_file()):
                 files.append(path)
     return files
 
@@ -73,13 +75,17 @@ def main() -> int:
     failed = False
     for path in lean_source_files(root):
         relative = path.relative_to(root)
+        if path.is_symlink():
+            print(f"{relative}: must be a regular Lean file, not a symbolic link")
+            failed = True
+            continue
         try:
             text = path.read_bytes().decode("utf-8")
         except UnicodeDecodeError:
             print(f"{relative}: source is not valid UTF-8")
             failed = True
             continue
-        if not has_module_header(text):
+        if path.name != "lakefile.lean" and not has_module_header(text):
             print(f"{relative}: must use the module header keyword")
             failed = True
         if physical_lines(text) > 10_000:
