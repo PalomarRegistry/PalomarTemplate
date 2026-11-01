@@ -84,7 +84,7 @@ jobs:
           persist-credentials: false
       - name: Check Lean source requirements before builds
         run: python3 scripts/check-lean-sources.py
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+      - uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64
         with:
           build: true
 
@@ -98,7 +98,7 @@ jobs:
           persist-credentials: false
       - name: Check Lean source requirements before builds
         run: python3 scripts/check-lean-sources.py
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+      - uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64
         with:
           build: false
       - name: Build doc-gen4 output
@@ -124,7 +124,7 @@ jobs:
           persist-credentials: false
       - name: Check Lean source requirements before builds
         run: python3 scripts/check-lean-sources.py
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+      - uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64
         with:
           build: false
       - name: Install bubblewrap for lake comparator's sandbox
